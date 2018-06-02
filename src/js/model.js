@@ -24,7 +24,7 @@ const setRecipeInfo = function(data) {
     nutrients,
     recipeURL
   };
-  console.log(state);
+
   return state;
 };
 

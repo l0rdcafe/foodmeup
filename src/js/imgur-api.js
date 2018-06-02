@@ -12,7 +12,6 @@ const getImage = function(query) {
 
   function parseResp(res) {
     const { data } = res;
-    console.log(data);
     if (data.length === 0) {
       return { error: true, message: "No image results found." };
     }

@@ -32,7 +32,6 @@ const searchRecipe = function(e) {
 
           ImgAPI.getImage(query)
             .then(resp => {
-              console.log(resp);
               if (resp.error) {
                 view.drawNotif(resp.message, "error");
               } else {

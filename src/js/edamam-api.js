@@ -6,7 +6,6 @@ const getRecipe = function(query) {
   const url = `https://api.edamam.com/search?app_id=${APP_ID}&app_key=${APP_KEY}&q=${query}`;
 
   function parseDish(res) {
-    console.log(res);
     const name = res.recipe.label;
     const recipeURL = res.recipe.url;
     const { totalNutrients } = res.recipe;
