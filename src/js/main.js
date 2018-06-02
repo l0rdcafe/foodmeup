@@ -43,6 +43,7 @@ const searchRecipe = function(e) {
         })
         .catch(err => {
           view.drawNotif("Sorry, something went wrong. Please try again later.", "error");
+          view.removeSpinner();
         });
     }
     fieldListener();
@@ -50,7 +51,7 @@ const searchRecipe = function(e) {
 };
 
 const fieldListener = function() {
-  view.drawSearchField();
+  view.drawSearchState();
   helpers.$on(document, "keydown", searchRecipe);
 };
 

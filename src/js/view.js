@@ -29,22 +29,29 @@ const drawNotif = function(msg, type) {
   const div = `<div class="notif animated fadeInUp text-c ${type}">${msg}</div>`;
   const section = helpers.qs(".section");
   removeNotifs();
-  section.insertAdjacentHTML("beforebegin", div);
+  section.insertAdjacentHTML("afterbegin", div);
   const notif = helpers.qs(".notif");
+  const title = helpers.qs(".title");
+  title.classList.add("pushed");
 
   setTimeout(() => {
     notif.classList.remove("fadeInUp");
     notif.classList.add("fadeOutDown");
+    title.classList.remove("pushed");
   }, 2500);
 };
 
-const drawSearchField = function() {
+const drawSearchState = function() {
   const field = helpers.newEl("input");
   const section = helpers.qs(".section");
-  field.className = "input input--primary";
+  const title = helpers.newEl("h3");
+  title.className = "title text-c";
+  title.innerHTML = "Please search one or more ingredients to find a recipe.";
+  field.className = "input input--primary x-centered";
   field.id = "search";
   removeNotifs();
   section.insertBefore(field, section.firstChild);
+  section.insertBefore(title, section.firstChild);
   return field;
 };
 
@@ -95,7 +102,7 @@ const drawLink = function(url) {
   const p = helpers.newEl("p");
   const a = helpers.newEl("a");
   p.innerHTML = "Full recipe ";
-  p.className = "text-c link";
+  p.className = "link";
   a.innerHTML = "here.";
   a.href = url;
   a.setAttribute("target", "_blank");
@@ -121,7 +128,7 @@ const drawRecipe = function(recipe) {
 
   const pxFromBottom = window.innerHeight - document.body.scrollHeight;
 
-  if (pxFromBottom - 60 < 20) {
+  if (pxFromBottom - 100 < 100) {
     footer.style.position = "static";
     footer.style.float = "left";
   } else {
@@ -148,7 +155,7 @@ export default {
   drawRecipe,
   drawSpinner,
   removeSpinner,
-  drawSearchField,
+  drawSearchState,
   drawNotif,
   toggleState,
   drawImg,
