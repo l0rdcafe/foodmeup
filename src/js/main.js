@@ -19,7 +19,8 @@ const searchRecipe = function(e) {
   const key = e.which || e.keyCode;
   if (key === 13) {
     const { value } = helpers.qs("#search");
-    if (value !== "") {
+    const isValid = value !== "" && !/[<>/\\&;`"*{}()\d$^%#@![\]]+/.test(value);
+    if (isValid) {
       view.drawSpinner();
       RecipeAPI.getRecipe(value)
         .then(res => {
@@ -45,8 +46,10 @@ const searchRecipe = function(e) {
           view.drawNotif("Sorry, something went wrong. Please try again later.", "error");
           view.removeSpinner();
         });
+      fieldListener();
+    } else {
+      view.drawNotif("Please enter a valid search query.", "primary");
     }
-    fieldListener();
   }
 };
 

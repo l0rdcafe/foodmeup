@@ -1,5 +1,5 @@
 h1 {
-    padding-top: 1.5
+    padding-top: 3.5%;
 }
 
 .title {
@@ -63,14 +63,16 @@ h1 {
 }
 
 .pushed {
-    margin-top: 11%;
+    margin-top: 40%;
 }
 
 .notif {
     justify-content: center;
     position: absolute;
-    top: 3%;
-    left: 35%;
+    padding: 1%;
+    width: 52%;
+    left: 25%;
+    top: 8%;
 }
 
 .nutrients__item {
@@ -80,7 +82,7 @@ h1 {
 }
 
 .footer {
-    height: 11.5vh;
+    height: 10vh;
     font-size: 1.25rem;
     padding: 0.5% 0;
 }
@@ -94,7 +96,15 @@ h1 {
     margin: 0;
 }
 
+.social__item {
+    margin-bottom: 0;
+}
+
 @media (min-width: 768px) {
+    h1 {
+        padding-top: 2%;
+    }
+
     .name,
     .link {
         width: 100%;
@@ -113,10 +123,20 @@ h1 {
         font-size: 3.25rem;
     }
 
+    .notif {
+        top: 12%;
+        width: 30%;
+        left: 35%;
+    }
+
     .ingredients {
         width: 25%;
         float: left;
         font-size: 1.75rem;
+    }
+
+    .pushed {
+        margin-top: 9%;
     }
 
     .img {
