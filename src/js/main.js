@@ -2,7 +2,6 @@ import helpers from "./helpers";
 import model from "./model";
 import view from "./view";
 import RecipeAPI from "./edamam-api";
-import ImgAPI from "./imgur-api";
 
 const ingStateListener = function() {
   const ingList = helpers.qs(".ingredients");
@@ -15,6 +14,28 @@ const ingStateListener = function() {
   helpers.$on(ingList, "click", toggleState);
 };
 
+const nextListener = function() {
+  const btn = helpers.qs("#next");
+  helpers.$on(btn, "click", () => {
+    const { recipes } = model.getState();
+    console.log(recipes);
+    nextRecipe(recipes);
+  });
+};
+
+const nextRecipe = function(recipes) {
+  if (recipes.length > 0) {
+    const recipe = recipes.shift();
+    view.drawRecipe(recipe);
+    ingStateListener();
+    nextListener();
+    fieldListener();
+  } else {
+    view.drawNotif("You ran out of results.", "info");
+    view.removeNextBtn();
+  }
+};
+
 const searchRecipe = function(e) {
   const key = e.which || e.keyCode;
   if (key === 13) {
@@ -24,29 +45,14 @@ const searchRecipe = function(e) {
       view.drawSpinner();
       RecipeAPI.getRecipe(value)
         .then(res => {
-          const { recipe } = model.setRecipeInfo(res);
+          const { recipes } = model.setState(res);
           view.removeSpinner();
-          view.drawRecipe(recipe);
-          ingStateListener();
-
-          const query = encodeURIComponent(recipe.name.toLowerCase());
-
-          ImgAPI.getImage(query)
-            .then(resp => {
-              if (resp.error) {
-                view.drawNotif(resp.message, "error");
-              } else {
-                const { imgURL } = model.setImg(resp);
-                view.drawImg(imgURL);
-              }
-            })
-            .catch(err => console.error(err));
+          nextRecipe(recipes);
         })
         .catch(err => {
           view.drawNotif("Sorry, something went wrong. Please try again later.", "error");
           view.removeSpinner();
         });
-      fieldListener();
     } else {
       view.drawNotif("Please enter a valid search query.", "primary");
     }

@@ -110,9 +110,23 @@ const drawLink = function(url) {
   return p;
 };
 
+const drawNextBtn = function() {
+  const btn = helpers.newEl("button");
+  const section = helpers.qs(".section");
+  btn.className = "secondary button";
+  btn.id = "next";
+  btn.innerHTML = "Next";
+  section.appendChild(btn);
+};
+
+const removeNextBtn = function() {
+  const btn = helpers.qs("#next");
+  btn.parentNode.removeChild(btn);
+};
+
 const drawRecipe = function(recipe) {
   const section = helpers.qs(".section");
-  const { name, ingredients, recipeURL, nutrients } = recipe;
+  const { name, ingredients, recipeURL, nutrients, img } = recipe;
   const [nameElm, ingredientsElm, linkElm, nutrientsElm] = [
     drawName(name),
     drawIngredients(ingredients),
@@ -121,10 +135,15 @@ const drawRecipe = function(recipe) {
   ];
   const footer = helpers.qs(".footer");
   removeNotifs();
+  section.innerHTML = "";
+  footer.style.position = "absolute";
+  footer.style.float = "none";
   section.appendChild(nameElm);
   section.appendChild(ingredientsElm);
   section.appendChild(nutrientsElm);
   section.appendChild(linkElm);
+  drawImg(img);
+  drawNextBtn();
 
   const pxFromBottom = window.innerHeight - document.body.scrollHeight;
 
@@ -158,6 +177,6 @@ export default {
   drawSearchState,
   drawNotif,
   toggleState,
-  drawImg,
-  removeNotifs
+  removeNotifs,
+  removeNextBtn
 };

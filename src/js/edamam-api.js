@@ -6,28 +6,37 @@ const getRecipe = function(query) {
   const url = `https://api.edamam.com/search?app_id=${APP_ID}&app_key=${APP_KEY}&q=${query}`;
 
   function parseDish(res) {
-    const name = res.recipe.label;
-    const recipeURL = res.recipe.url;
-    const { totalNutrients } = res.recipe;
-    const ingredients = res.recipe.ingredients.map(ing => ({ text: ing.text, done: false }));
-    const nutrients = [];
+    const recipes = [];
 
-    Object.keys(totalNutrients).forEach(nutrient => {
-      const rounded = Math.round(totalNutrients[nutrient].quantity);
-      const item = {
-        name: `${totalNutrients[nutrient].label}`,
-        quantity: `${rounded}${totalNutrients[nutrient].unit}`
-      };
-      nutrients.push(item);
+    res.forEach(item => {
+      const name = item.recipe.label;
+      const recipeURL = item.recipe.url;
+      const { totalNutrients } = item.recipe;
+      const ingredients = item.recipe.ingredients.map(ing => ({ text: ing.text, done: false }));
+      const nutrients = [];
+      const img = item.recipe.image;
+
+      Object.keys(totalNutrients).forEach(nutrient => {
+        const rounded = Math.round(totalNutrients[nutrient].quantity);
+        const nut = {
+          name: `${totalNutrients[nutrient].label}`,
+          quantity: `${rounded}${totalNutrients[nutrient].unit}`
+        };
+        nutrients.push(nut);
+      });
+
+      recipes.push({
+        name,
+        recipeURL,
+        nutrients,
+        ingredients,
+        img
+      });
     });
-    return {
-      name,
-      recipeURL,
-      nutrients,
-      ingredients
-    };
+
+    return recipes;
   }
-  return helpers.getJSON(url).then(res => parseDish(res.hits[0]));
+  return helpers.getJSON(url).then(res => parseDish(res.hits));
 };
 
 export default { getRecipe };
